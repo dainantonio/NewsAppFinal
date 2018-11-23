@@ -1,6 +1,6 @@
 package com.example.dainr.project6newsapp1;
 
-public class News {
+class News {
 
     //class declaration with 4 instance variables for this fragment
 
@@ -21,10 +21,10 @@ public class News {
 
     // constructors in which we instantiate the instance variables
     News(String articleSection,String articleName, String articleAuthor, String articleDate, String articleUrl){
-        this.articleSection= articleSection;
-        this.articleName= articleName;
-        this.articleAuthor=articleAuthor;
-        this.articleDate=articleDate;
+        this.articleSection = articleSection;
+        this.articleName = articleName;
+        this.articleAuthor = articleAuthor;
+        this.articleDate = articleDate;
         this.articleUrl=articleUrl;
     }
 
