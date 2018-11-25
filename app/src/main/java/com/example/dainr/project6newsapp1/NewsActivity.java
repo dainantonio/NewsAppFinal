@@ -19,15 +19,19 @@ import java.util.List;
 
 @SuppressWarnings("ALL")
 public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
-
     public static final String LOG_TAG = NewsActivity.class.getName();
 
     /** URL for news data from the guardian dataset */
     private static final String GUARDIAN_REQUEST_URL =
             "https://content.guardianapis.com/search?api-key=c42de5ac-889c-4752-997c-0a064727fc76";
 
+    /**
+     * Constant value for the newsloader ID. We can choose any integer.
+     * This really only comes into play if you're using multiple loaders.
+     */
     private static final int NEWS_LOADER_ID = 1;
 
+    /** Adapter for the list of earthquakes */
     private NewsAdapter adapter;
 
     /** TextView that is displayed when the list is empty */
@@ -80,12 +84,12 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
             // Get a reference to the LoaderManager, in order to interact with loaders.
-            LoaderManager loaderManager = getLoaderManager();
+            android.app.LoaderManager loaderManager = getLoaderManager();
 
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
-            loaderManager.initLoader(NEWS_LOADER_ID, null,this);
+            loaderManager.initLoader(NEWS_LOADER_ID, null, (android.app.LoaderManager.LoaderCallbacks<Object>) this);
         } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
@@ -97,13 +101,13 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    @Override
+
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
         // Create a new loader for the given URL
         return new NewsLoader(this, GUARDIAN_REQUEST_URL);
     }
 
-    @Override
+
     public void onLoadFinished(Loader<List<News>> loader, List<News> NewsItems) {
         // Hide loading indicator because the data has been loaded
         View loadingIndicator = findViewById(R.id.loading_indicator);
@@ -119,7 +123,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    @Override
+
     public void onLoaderReset(Loader<List<News>>loader) {
         // Loader reset, so we can clear out our existing data.
         adapter.clear();
