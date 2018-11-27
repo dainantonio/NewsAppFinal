@@ -6,8 +6,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("ALL")
-public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
+public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<List<News>> {
+
     public static final String LOG_TAG = NewsActivity.class.getName();
 
     /** URL for news data from the guardian dataset */
@@ -31,7 +33,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
      */
     private static final int NEWS_LOADER_ID = 1;
 
-    /** Adapter for the list of earthquakes */
+
     private NewsAdapter adapter;
 
     /** TextView that is displayed when the list is empty */
@@ -84,12 +86,12 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         // If there is a network connection, fetch data
         if (networkInfo != null && networkInfo.isConnected()) {
             // Get a reference to the LoaderManager, in order to interact with loaders.
-            android.app.LoaderManager loaderManager = getLoaderManager();
+            LoaderManager loaderManager = getLoaderManager();
 
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
-            loaderManager.initLoader(NEWS_LOADER_ID, null, (android.app.LoaderManager.LoaderCallbacks<Object>) this);
+            loaderManager.initLoader(NEWS_LOADER_ID, null, this);
         } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
@@ -101,7 +103,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-
+@Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
         // Create a new loader for the given URL
         return new NewsLoader(this, GUARDIAN_REQUEST_URL);

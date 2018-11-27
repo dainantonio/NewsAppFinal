@@ -18,7 +18,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.dainr.project6newsapp1.NewsActivity.LOG_TAG;
 
 /**
  * Helper methods related to requesting and receiving news data from USGS.
