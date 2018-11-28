@@ -21,18 +21,7 @@ import java.util.List;
 
 public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<List<News>> {
 
-    public static final String LOG_TAG = NewsActivity.class.getName();
-
-
-    /**
-     * Constant value for the newsloader ID. We can choose any integer.
-     * This really only comes into play if you're using multiple loaders.
-     */
-    private static final int NEWS_LOADER_ID = 1;
-
-
     private NewsAdapter adapter;
-
     /** TextView that is displayed when the list is empty */
     private TextView mEmptyStateTextView;
 
@@ -88,7 +77,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
             // Initialize the loader. Pass in the int ID constant defined above and pass in null for
             // the bundle. Pass in this activity for the LoaderCallbacks parameter (which is valid
             // because this activity implements the LoaderCallbacks interface).
-            loaderManager.initLoader(NEWS_LOADER_ID, null, this);
+            loaderManager.initLoader(0, null, this);
         } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible

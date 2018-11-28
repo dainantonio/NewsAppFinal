@@ -34,7 +34,7 @@ final class QueryUtils {
     private QueryUtils() {
     }
 
-    static List<News> fetchNewsData(String requestUrl) {
+    public  static List<News> fetchNewsData(String requestUrl) {
         // Create URL object
         URL url = createUrl(requestUrl);
 
@@ -148,34 +148,34 @@ final class QueryUtils {
         try {
 
             // create a JSONObject from the JSON response string
-            JSONObject newsJsonResponse = new JSONObject(newsJSON);
+            JSONObject baseJsonResponse = new JSONObject(newsJSON);
 
             // extract the JSONObject associated with the key called "response"
-            JSONObject response = newsJsonResponse.getJSONObject ( "response" );
+            JSONObject response = baseJsonResponse.getJSONObject ( "response" );
 
             // extract the JSONArray associated with the key called "results"
-            JSONArray newsArray = response.getJSONArray ( "results" );
+            JSONArray resultsArray = response.getJSONArray ( "results" );
 
-            // For each news in the newsArray, create an {@link Earthquake} object
-            for (int i = 0; i < newsArray.length(); i++) {
+            // For each news in the newsArray, create an {@link News} object
+            for (int i = 0; i < resultsArray.length(); i++) {
 
                 // Get a single newsItem at position i within the list of newsItem
-                JSONObject currentNews = newsArray.getJSONObject(i);
+                JSONObject currentResults = resultsArray.getJSONObject(i);
 
                 //Extract the value for the key called "sectionName"
-                String sectionName = currentNews.getString("sectionName");
+                String sectionName = currentResults.getString("sectionName");
 
                 // Extract the value for the key called "place"
-                String webTitle = currentNews.getString("webTitle");
+                String webTitle = currentResults.getString("webTitle");
 
                 // Extract the value for the key called "date"
-                String date = currentNews.getString("webPublicationDate");
+                String date = currentResults.getString("webPublicationDate");
 
                 // Extract the value for the key called "url"
-                String url = currentNews.getString("webUrl");
+                String url = currentResults.getString("webUrl");
 
                 // extract the JSONArray associated with the key called "tags"
-                JSONArray authorArray = currentNews.getJSONArray ( "tags" );
+                JSONArray authorArray = currentResults.getJSONArray ( "tags" );
                 String author ="";
 
                 // determine if the authorArray is not null and length is greater than 0 in order
@@ -190,7 +190,7 @@ final class QueryUtils {
 
                 // Create a new {@link Earthquake} object with the magnitude, webTitle, date,
                 // and url from the JSON response.
-                News newsItem = new News(sectionName, webTitle, date, url, author.toString());
+                News newsItem = new News(sectionName, webTitle, date, url, author);
 
                 // Add the new {@link Earthquake} to the list of newsItem.
                 news.add(newsItem);
