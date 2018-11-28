@@ -6,15 +6,14 @@ import android.content.AsyncTaskLoader;
 import java.util.List;
 
 public class NewsLoader extends AsyncTaskLoader<List<News>> {
-    /** Tag for log messages */
-    private static final String LOG_TAG = NewsLoader.class.getName();
 
-    /** Query URL */
-    private String mUrl;
+    //** URL for news data from the guardian dataset */
+    private static final String GUARDIAN_REQUEST_URL =
+            "https://content.guardianapis.com/search?api-key=c42de5ac-889c-4752-997c-0a064727fc76";
 
-    NewsLoader(Context context, String url) {
+    NewsLoader(Context context) {
         super(context);
-        mUrl = url;
+
     }
 
     @Override
@@ -27,11 +26,11 @@ public class NewsLoader extends AsyncTaskLoader<List<News>> {
      */
     @Override
     public List<News> loadInBackground() {
-        if (mUrl == null) {
+        if (GUARDIAN_REQUEST_URL == null) {
             return null;
         }
 
         // Perform the network request, parse the response, and extract a list of NewsItems.
-        return QueryUtils.fetchNewsData(mUrl);
+        return QueryUtils.fetchNewsData(GUARDIAN_REQUEST_URL);
     }
 }

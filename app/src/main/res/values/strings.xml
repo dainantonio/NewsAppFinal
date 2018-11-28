@@ -2,4 +2,8 @@
     <string name="app_name">Project6NewsApp1</string>
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="no_news">No News Available</string>
+    <string name="textview1">TextView1</string>
+    <string name="textview2">TextView2</string>
+    <string name="textview3">TextView3</string>
+    <string name="textview4">TextView</string>
 </resources>

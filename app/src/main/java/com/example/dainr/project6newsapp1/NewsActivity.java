@@ -18,14 +18,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("ALL")
+
 public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<List<News>> {
 
     public static final String LOG_TAG = NewsActivity.class.getName();
 
-    /** URL for news data from the guardian dataset */
-    private static final String GUARDIAN_REQUEST_URL =
-            "https://content.guardianapis.com/search?api-key=c42de5ac-889c-4752-997c-0a064727fc76";
 
     /**
      * Constant value for the newsloader ID. We can choose any integer.
@@ -104,9 +101,9 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     }
 
 @Override
-    public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
+    public Loader<List<News>> onCreateLoader(int id, Bundle args) {
         // Create a new loader for the given URL
-        return new NewsLoader(this, GUARDIAN_REQUEST_URL);
+        return new NewsLoader(this);
     }
 
 

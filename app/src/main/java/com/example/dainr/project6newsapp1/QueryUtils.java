@@ -49,7 +49,8 @@ final class QueryUtils {
         // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
 
         // Return the list of {@link News}
-        return extractFeatureFromJson(jsonResponse);
+        List<News>newsList = extractFeatureFromJson(jsonResponse);
+        return newsList;
     }
 
     /**
@@ -147,7 +148,7 @@ final class QueryUtils {
         try {
 
             // create a JSONObject from the JSON response string
-            JSONObject newsJsonResponse = new JSONObject ( newsJSON );
+            JSONObject newsJsonResponse = new JSONObject(newsJSON);
 
             // extract the JSONObject associated with the key called "response"
             JSONObject response = newsJsonResponse.getJSONObject ( "response" );
@@ -173,41 +174,18 @@ final class QueryUtils {
                 // Extract the value for the key called "url"
                 String url = currentNews.getString("webUrl");
 
-                // create a StringBuilder for news article author(s)
-                StringBuilder author = new StringBuilder ( "By: " );
-
                 // extract the JSONArray associated with the key called "tags"
                 JSONArray authorArray = currentNews.getJSONArray ( "tags" );
+                String author ="";
 
                 // determine if the authorArray is not null and length is greater than 0 in order
                 // to display a list of author(s)
-                if (authorArray != null && authorArray.length () > 0) {
-
-                    // for each author list them accordingly
-                    for (int j = 0; j < authorArray.length (); j++) {
-
-                        // get a single author at position j within the list of author(s)
-                        JSONObject authors = authorArray.getJSONObject ( j );
-
-                        // extract the value associated with the key called "webTitle"
-                        String authorsListed = authors.optString ( "webTitle" );
-
-                        // if the authorArray is not null and length is greater than 1, then
-                        // list all authors separated by tabs
-                        if (authorArray.length () > 1) {
-                            author.append ( authorsListed );
-                            author.append ( "\t\t\t" );
-
-                            // if there is only 1 author, then list just that author
-                        } else {
-                            author.append ( authorsListed );
-                        }
-                    }
-                    // if there are no authors within the authorsArray, then state "No author(s) listed"
-                } else {
-                    author.replace ( 0, 3, "No author(s) listed" );
+                if (authorArray.length()!= 0) {
+                    JSONObject currentAuthorArray = authorArray.getJSONObject(0);
+                    author = currentAuthorArray.getString("webTitle");
+                }else{
+                    author = "No Author ..";
                 }
-
 
 
                 // Create a new {@link Earthquake} object with the magnitude, webTitle, date,
