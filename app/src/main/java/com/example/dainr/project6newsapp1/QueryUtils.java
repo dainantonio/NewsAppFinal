@@ -25,6 +25,7 @@ import java.util.List;
 final class QueryUtils {
     /** Tag for the log messages */
     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+    private static ArrayList<News> mNewsList;
 
     /**
      * Create a private constructor because no one should ever create a {@link QueryUtils} object.
@@ -174,28 +175,26 @@ final class QueryUtils {
                 // Extract the value for the key called "url"
                 String url = currentResults.getString("webUrl");
 
-                // extract the JSONArray associated with the key called "tags"
-                JSONArray authorArray = currentResults.getJSONArray ( "tags" );
-                String author ="";
+                //Extract the JSONArray with the key "tag"
+                JSONArray tagsArray = currentResults.getJSONArray("tags");
 
-                // determine if the authorArray is not null and length is greater than 0 in order
-                // to display a list of author(s)
-                if (authorArray.length()!= 0) {
-                    JSONObject currentAuthorArray = authorArray.getJSONObject(0);
-                    author = currentAuthorArray.getString("webTitle");
-                }else{
-                    author = "No Author ..";
+                //https://stackoverflow.com/questions/48883380/json-extraction-author-guardian-api
+
+                //Declare String variable to hold author name
+                String authorName = null;
+
+                if (tagsArray.length() == 1) {
+                    JSONObject contributorTag = (JSONObject) tagsArray.get(0);
+                    authorName = contributorTag.getString("webTitle");
                 }
 
-
-                // Create a new {@link Earthquake} object with the magnitude, webTitle, date,
+                // Create a new NewsStory object with the title, section name, date,
                 // and url from the JSON response.
-                News newsItem = new News(sectionName, webTitle, date, url, author);
+              News newsOnline= new News( sectionName, webTitle, date, url, authorName );
 
-                // Add the new {@link Earthquake} to the list of newsItem.
-                news.add(newsItem);
+                // Add the new NewsStory to the list of newsStories.
+               news.add(newsOnline);
             }
-
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,
             // catch the exception here, so the app doesn't crash. Print a log message
