@@ -8,10 +8,10 @@ import java.util.List;
 public class NewsLoader extends AsyncTaskLoader<List<News>> {
 
     //** URL for news data from the guardian dataset */
-    private static final String GUARDIAN_REQUEST_URL =
-            "https://content.guardianapis.com/search?api-key=c42de5ac-889c-4752-997c-0a064727fc76";
+    private static String GUARDIAN_REQUEST_URL =
+            "http://content.guardianapis.com/search?&show-tags=contributor&q=%27tech%27&api-key=c42de5ac-889c-4752-997c-0a064727fc76";
 
-    NewsLoader(Context context) {
+    public NewsLoader(Context context) {
         super(context);
 
     }

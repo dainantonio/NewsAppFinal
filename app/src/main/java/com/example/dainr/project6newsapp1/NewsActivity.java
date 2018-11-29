@@ -37,7 +37,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         newsListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new {@link ArrayAdapter} of news
-        final NewsAdapter adapter = new NewsAdapter(this, new ArrayList<News>());
+        adapter = new NewsAdapter(this, new ArrayList<News>());
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
