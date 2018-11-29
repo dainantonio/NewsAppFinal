@@ -2,7 +2,6 @@ package com.example.dainr.project6newsapp1;
 
 import android.text.TextUtils;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

@@ -1,15 +1,19 @@
 package com.example.dainr.project6newsapp1;
 
+import android.app.LoaderManager;
+import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.LoaderManager;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.Loader;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -24,6 +28,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     private NewsAdapter adapter;
     /** TextView that is displayed when the list is empty */
     private TextView mEmptyStateTextView;
+    private static String GUARDIAN_REQUEST_URL = "http://content.guardianapis.com/search?";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +38,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         // Find a reference to the {@link ListView} in the layout
         ListView newsListView = findViewById(R.id.list);
 
-        mEmptyStateTextView = (TextView) findViewById(R.id.empty_view);
+        mEmptyStateTextView = findViewById(R.id.empty_view);
         newsListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new {@link ArrayAdapter} of news
@@ -89,11 +94,37 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         }
     }
 
+    //onCreateLoader instantiates and returns a new Loader for the given ID
 @Override
     public Loader<List<News>> onCreateLoader(int id, Bundle args) {
         // Create a new loader for the given URL
-        return new NewsLoader(this);
+
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+    // getString retrieves a String value from the preferences.
+    // The second parameter is the default value for this preference.
+    String orderBy = sharedPreferences.getString(getString(R.string.settings_order_by_key), getString(R.string.settings_order_by_default));
+    String category = sharedPreferences.getString(getString(R.string.settings_category_news_key), getString(R.string.settings_category_default));
+
+    // parse breaks apart the URI string that's passed into its parameter
+    Uri baseUri = Uri.parse(GUARDIAN_REQUEST_URL);
+
+    // buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
+    Uri.Builder uriBuilder = baseUri.buildUpon();
+
+    //// Append query parameter and its value. For example, the `format=geojson`
+    uriBuilder.appendQueryParameter("api-key", "test");
+    uriBuilder.appendQueryParameter("show-tags", "contributor");
+
+    uriBuilder.appendQueryParameter("order-by", orderBy);
+
+    if (!category.equals(getString(R.string.settings_category_default))) {
+        uriBuilder.appendQueryParameter("category", category);
     }
+
+    // // Return the completed uri `http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=10&minmag=minMagnitude&orderby=time
+    return new NewsLoader(this, uriBuilder.toString());
+}
 
 
     public void onLoadFinished(Loader<List<News>> loader, List<News> NewsItems) {
@@ -116,5 +147,27 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         // Loader reset, so we can clear out our existing data.
         adapter.clear();
 
+    }
+
+    @Override
+    // This method initialize the contents of the Activity's options menu.
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the Options Menu we specified in XML
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    // method is where we can setup the specific action that occurs
+    // when any of the items in the Options Menu are selected.
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //determine which item was selected and what action to take
+        int id = item.getItemId();
+        if (id == R.id.action_setting) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
