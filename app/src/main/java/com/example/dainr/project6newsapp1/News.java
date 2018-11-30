@@ -1,6 +1,6 @@
 package com.example.dainr.project6newsapp1;
 
- public  class News {
+class News {
 
     //class declaration with 4 instance variables for this fragment
 

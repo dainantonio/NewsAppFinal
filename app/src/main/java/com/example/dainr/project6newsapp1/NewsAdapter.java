@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * These list item layouts will be provided to an adapter view like ListView
  * to be displayed to the user.
  */
-public class NewsAdapter extends ArrayAdapter<News> {
+class NewsAdapter extends ArrayAdapter<News> {
 
     /**
      * Constructs a new {@link NewsAdapter}.
